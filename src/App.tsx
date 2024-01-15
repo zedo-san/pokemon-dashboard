@@ -1,4 +1,4 @@
-import PokemonDashboard from "./components/PokemonDashboard";
+import PokemonDashboard from "./components/PokemonDashboard/PokemonDashboard";
 import { Column } from "./types";
 
 const configuration = {

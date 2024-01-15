@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ReactNode, useEffect, useState } from "react";
-import { Column, Widget, WidgetType } from "../types";
-import DashboardWidget from "./DashboardWidget";
+import { ReactNode } from "react";
+import { Column } from "../../types";
+
+import DashboardWidgetList from "../DashboardWidgetList/DashboardWidgetList";
 
 interface PokemonDashboardProps {
   configuration: {
@@ -52,58 +53,6 @@ const DashboardWidgetContainer = ({ children }: { children: ReactNode }) => {
       {children}
     </div>
   );
-};
-
-const DashboardWidgetList = ({ widgets }: { widgets: Widget[] }) => {
-  const [widgetData, setWidgetData] = useState<Widget[]>([]);
-  const fetchWidgetData = async (api: string, type: WidgetType) => {
-    try {
-      const response = await fetch(api);
-      const result = await response.json();
-      if (type === "number") {
-        let count = 0;
-        if (result.pokemon_species_details) {
-          count = result.pokemon_species_details.length;
-        }
-        if (result.names) {
-          count = result.names.length;
-        }
-        return count;
-      } else {
-        return result.results;
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const updatedWidgets = [...widgets];
-      for (const widget of updatedWidgets) {
-        try {
-          const response = await fetchWidgetData(widget.api, widget.type);
-          widget.data = response;
-        } catch (error) {
-          widget.data = null;
-        }
-      }
-      setWidgetData(updatedWidgets);
-    };
-    fetchData();
-  }, [widgets]);
-
-  return widgetData.map((widget, widgetIndex) => (
-    <DashboardWidget
-      key={`widget-${widgetIndex}`}
-      title={widget.title}
-      subtitle={widget.subtitle}
-      type={widget.type}
-      api={widget.api}
-      data={widget.data}
-    />
-  ));
 };
 
 export default PokemonDashboard;

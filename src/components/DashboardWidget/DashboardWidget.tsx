@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Widget } from "../types";
+import { Widget } from "../../types";
 
 export default function DashboardWidget({ title, subtitle, type, data }: Widget) {
   const renderWidget = () => {
